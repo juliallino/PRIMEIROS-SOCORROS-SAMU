@@ -1,0 +1,175 @@
+[gd_scene format=3 uid="uid://bbkbd31wex3e6"]
+
+[ext_resource type="Script" uid="uid://ceoe4kciu2ghp" path="res://scripts/ui/FinalPlantao.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7ml86hwaa6ap" path="res://tela_ambulância.png" id="2_bg"]
+
+
+[sub_resource type="Animation" id="Animation_end"]
+resource_name = "end_cinematic"
+length = 10.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Background:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 10),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-50, -20)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_end"]
+_data = {
+"end_cinematic": SubResource("Animation_end")
+}
+
+[sub_resource type="Environment" id="Environment_end"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.5
+glow_strength = 1.0
+glow_bloom = 0.2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain_light"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 1, 1)
+direction = Vector3(-0.2, 1, 0)
+spread = 5.0
+initial_velocity_min = 200.0
+initial_velocity_max = 400.0
+gravity = Vector3(0, 0, 0)
+scale_min = 1.0
+scale_max = 2.0
+color = Color(1, 1, 1, 0.2)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_stats"]
+bg_color = Color(0, 0, 0, 0.705882)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.8, 1, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="FinalPlantao" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Rain" type="GPUParticles2D" parent="."]
+position = Vector2(960, -50)
+amount = 100
+process_material = SubResource("ParticleProcessMaterial_rain_light")
+lifetime = 4.0
+preprocess = 2.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_end")
+}
+autoplay = "end_cinematic"
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_end")
+
+[node name="UIIayer" type="CanvasLayer" parent="."]
+
+[node name="CenterContainer" type="CenterContainer" parent="UIIayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UIIayer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+
+[node name="Title" type="Label" parent="UIIayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 86
+text = "PLANTÃO CONCLUÍDO"
+horizontal_alignment = 1
+
+[node name="Message" type="Label" parent="UIIayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "VIDAS SALVAS COM SUCESSO"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UIIayer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="NewShiftButton" type="Button" parent="UIIayer/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+text = "NOVO PLANTÃO"
+
+[node name="BackButton" type="Button" parent="UIIayer/CenterContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(300, 70)
+layout_mode = 2
+text = "VOLTAR AO MENU"
+
+[node name="StatsContainer" type="Panel" parent="UIIayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -400.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = 300.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_stats")
+
+[node name="StatsText" type="Label" parent="UIIayer/StatsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "CARREGANDO ESTATÍSTICAS..."
+horizontal_alignment = 1
+vertical_alignment = 1

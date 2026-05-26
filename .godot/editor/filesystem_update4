@@ -1,0 +1,7 @@
+res://scripts/phases/Asfixia_Intro.gd
+res://scripts/phases/Phase_Asfixia_Gameplay.gd
+res://scripts/managers/TransitionManager.gd
+res://scenes/phases/Asfixia_Intro.tscn
+res://scenes/ui/MainMenu.tscn
+res://scenes/phases/Phase_Asfixia_Gameplay.tscn
+res://scripts/phases/Desfibrilador_Gameplay.gd

@@ -1,0 +1,315 @@
+[gd_scene format=3 uid="uid://d1x1x1x1x1x1x"]
+
+[ext_resource type="Script" uid="uid://c8fnpvsav81l0" path="res://scripts/phases/Asfixia_Intro.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://cpdgk2ot7o2fb" path="res://chegando_para_emergencia_0.png" id="2_amb"]
+[ext_resource type="Texture2D" uid="uid://bb8i2xe1aoma0" path="res://vendo_a_asfixia_0.png" id="3_victim"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 1, 1)
+direction = Vector3(-0.3, 1, 0)
+spread = 5.0
+initial_velocity_min = 500.0
+initial_velocity_max = 800.0
+gravity = Vector3(0, 0, 0)
+scale_max = 3.0
+color = Color(1, 1, 1, 0.4)
+
+[sub_resource type="Environment" id="Environment_intro"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.6
+glow_strength = 1.2
+glow_bloom = 0.2
+
+[sub_resource type="Animation" id="Animation_cinematic"]
+resource_name = "intro_sequence"
+length = 8.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals/AmbulanceView:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 3.5, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals/VictimView:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 4, 4.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Camera2D:zoom")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 3.5, 4, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.1, 1.1), Vector2(1, 1), Vector2(1.2, 1.2)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5, 2.5, 5, 8),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": ["CENTRAL SAMU", "Unidade 07 chegando ao local. Possível caso de asfixia."],
+"method": &"update_dialogue"
+}, {
+"args": ["SOCORRISTA", "Paciente no restaurante, avistado. Parece em estado crítico."],
+"method": &"update_dialogue"
+}, {
+"args": ["PARCEIRO", "Ele não está respirando! Equipe, precisamos agir rápido!"],
+"method": &"update_dialogue"
+}, {
+"args": [],
+"method": &"_start_mission"
+}]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Camera2D:offset")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-5, 5), Vector2(5, -5), Vector2(-3, 2), Vector2(2, -3), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_siren"]
+resource_name = "siren_lights"
+length = 0.8
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Effects/SirenRed:energy")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [2.0, 0.0, 2.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Effects/SirenBlue:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [0.0, 2.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_intro"]
+_data = {
+&"intro_sequence": SubResource("Animation_cinematic"),
+&"siren_lights": SubResource("Animation_siren")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dialogue"]
+bg_color = Color(0, 0, 0, 0.8)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.180392, 0.372549, 0.584314, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_status"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress"]
+bg_color = Color(0, 0.6, 1, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Asfixia_Intro" type="Control" unique_id=645801664]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=996691222]
+position = Vector2(960, 540)
+
+[node name="Visuals" type="Node2D" parent="." unique_id=758877522]
+
+[node name="AmbulanceView" type="TextureRect" parent="Visuals" unique_id=939021939]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_amb")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="VictimView" type="TextureRect" parent="Visuals" unique_id=325199263]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_victim")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Effects" type="Node2D" parent="." unique_id=362411879]
+
+[node name="Rain" type="GPUParticles2D" parent="Effects" unique_id=1610232558]
+position = Vector2(960, -50)
+amount = 300
+lifetime = 2.0
+preprocess = 2.0
+process_material = SubResource("ParticleProcessMaterial_rain")
+
+[node name="SirenRed" type="PointLight2D" parent="Effects" unique_id=541990318]
+position = Vector2(400, 300)
+color = Color(1, 0, 0, 1)
+energy = 2.0
+texture_scale = 5.0
+
+[node name="SirenBlue" type="PointLight2D" parent="Effects" unique_id=1930558899]
+position = Vector2(1500, 300)
+color = Color(0, 0, 1, 1)
+energy = 0.0
+texture_scale = 5.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=312200226]
+environment = SubResource("Environment_intro")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=75805752]
+libraries/ = SubResource("AnimationLibrary_intro")
+autoplay = &"intro_sequence"
+
+[node name="SirenAnimation" type="AnimationPlayer" parent="." unique_id=2075422578]
+libraries/ = SubResource("AnimationLibrary_intro")
+autoplay = &"siren_lights"
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1388973705]
+
+[node name="DialogueBox" type="Panel" parent="UILayer" unique_id=1028096958]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -500.0
+offset_top = -200.0
+offset_right = 500.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_dialogue")
+
+[node name="Speaker" type="Label" parent="UILayer/DialogueBox" unique_id=394039545]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 15.0
+offset_right = 300.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.180392, 0.584314, 0.901961, 1)
+theme_override_font_sizes/font_size = 24
+text = "RÁDIO SAMU"
+
+[node name="Text" type="Label" parent="UILayer/DialogueBox" unique_id=1742202576]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 55.0
+offset_right = -25.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+text = "..."
+autowrap_mode = 3
+
+[node name="MissionStatus" type="Control" parent="UILayer" unique_id=1875143466]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 450.0
+offset_bottom = 150.0
+
+[node name="PhaseLabel" type="Label" parent="UILayer/MissionStatus" unique_id=1987950135]
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 40.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "FASE: ASFIXIA"
+
+[node name="CheckpointLabel" type="Label" parent="UILayer/MissionStatus" unique_id=1855476815]
+layout_mode = 0
+offset_top = 40.0
+offset_right = 300.0
+offset_bottom = 70.0
+theme_override_colors/font_color = Color(1, 0.8, 0, 1)
+theme_override_font_sizes/font_size = 18
+text = "CHECKPOINT: CHEGADA"
+
+[node name="PlantaoProgress" type="ProgressBar" parent="UILayer/MissionStatus" unique_id=1035366080]
+layout_mode = 0
+offset_top = 75.0
+offset_right = 300.0
+offset_bottom = 90.0
+theme_override_styles/background = SubResource("StyleBoxFlat_status")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress")
+value = 10.0
+show_percentage = false
+
+[node name="ProgressText" type="Label" parent="UILayer/MissionStatus" unique_id=1366523885]
+layout_mode = 0
+offset_left = 310.0
+offset_top = 70.0
+offset_right = 360.0
+offset_bottom = 93.0
+text = "1/4"

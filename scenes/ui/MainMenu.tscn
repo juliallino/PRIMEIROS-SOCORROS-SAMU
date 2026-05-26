@@ -1,0 +1,208 @@
+[gd_scene format=3 uid="uid://c1x1x1x1x1x1x"]
+
+[ext_resource type="Script" uid="uid://fkxpfdbcb3if" path="res://scripts/ui/MainMenu.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7ml86hwaa6ap" path="res://tela_ambulância.png" id="3_iwbf0"]
+[ext_resource type="Theme" uid="uid://b8x8x8x8x8x8x" path="res://themes/main_theme.tres" id="3_theme"]
+
+[sub_resource type="Gradient" id="Gradient_rain"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 0.4, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rain"]
+gradient = SubResource("Gradient_rain")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(1000, 1, 1)
+direction = Vector3(-0.5, 1, 0)
+spread = 5.0
+initial_velocity_min = 400.0
+initial_velocity_max = 700.0
+gravity = Vector3(0, 0, 0)
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_rain")
+
+[sub_resource type="Environment" id="Environment_menu"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.8
+glow_strength = 1.2
+glow_bloom = 0.1
+glow_blend_mode = 0
+glow_hdr_threshold = 0.5
+
+[sub_resource type="Animation" id="Animation_camera"]
+resource_name = "camera_float"
+length = 10.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Camera2D:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5, 5, 7.5, 10),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(960, 540), Vector2(970, 530), Vector2(950, 550), Vector2(965, 545), Vector2(960, 540)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_menu"]
+_data = {
+&"camera_float": SubResource("Animation_camera")
+}
+
+[node name="MainMenu" type="Control" unique_id=2058413607]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="." unique_id=638861738]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_iwbf0")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="RainParticles" type="GPUParticles2D" parent="." unique_id=839226984]
+position = Vector2(960, -50)
+amount = 200
+lifetime = 2.5
+preprocess = 2.0
+process_material = SubResource("ParticleProcessMaterial_rain")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=993099583]
+environment = SubResource("Environment_menu")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1190368408]
+position = Vector2(960, 540)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1409072338]
+libraries/ = SubResource("AnimationLibrary_menu")
+autoplay = &"camera_float"
+
+[node name="UIIayer" type="CanvasLayer" parent="." unique_id=545655870]
+
+[node name="MainContainer" type="Control" parent="UIIayer" unique_id=155246680]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="UIIayer/MainContainer" unique_id=1551884638]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 80.0
+offset_right = 400.0
+offset_bottom = 180.0
+grow_horizontal = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_font_sizes/font_size = 82
+text = "PLANTÃO DE EMERGÊNCIA"
+horizontal_alignment = 1
+
+[node name="Buttons" type="VBoxContainer" parent="UIIayer/MainContainer" unique_id=1584329198]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -20.0
+offset_right = 200.0
+offset_bottom = 220.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="StartButton" type="Button" parent="UIIayer/MainContainer/Buttons" unique_id=1385861272]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+text = "INICIAR PLANTÃO"
+
+[node name="InfoButton" type="Button" parent="UIIayer/MainContainer/Buttons" unique_id=1049286511]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "?"
+
+[node name="ResetButton" type="Button" parent="UIIayer/MainContainer/Buttons" unique_id=1115506647]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "REINICIAR PLANTÃO"
+
+[node name="MedicalReport" type="Panel" parent="UIIayer/MainContainer" unique_id=585874588]
+modulate = Color(1, 1, 1, 0.8)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = 350.0
+grow_horizontal = 0
+
+[node name="Label" type="Label" parent="UIIayer/MainContainer/MedicalReport" unique_id=732519724]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 10.0
+offset_right = 100.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "PRONTUÁRIO"
+horizontal_alignment = 1
+
+[node name="StatsList" type="VBoxContainer" parent="UIIayer/MainContainer/MedicalReport" unique_id=1909514499]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 50.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Asfixia" type="HBoxContainer" parent="UIIayer/MainContainer/MedicalReport/StatsList" unique_id=180920676]
+layout_mode = 2
+
+[node name="Name" type="Label" parent="UIIayer/MainContainer/MedicalReport/StatsList/Asfixia" unique_id=1153575925]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Asfixia"
+
+[node name="Status" type="Label" parent="UIIayer/MainContainer/MedicalReport/StatsList/Asfixia" unique_id=388121950]
+layout_mode = 2
+text = "BLOQUEADO"
+
+[node name="InfoPopup" type="AcceptDialog" parent="UIIayer" unique_id=208961433]
+title = "Sobre o Jogo"
+initial_position = 2
+size = Vector2i(400, 200)
+dialog_text = "PLANTÃO PRIMEIROS SOCORROS SAMU é um jogo educativo de primeiros socorros onde o jogador participa de ocorrências críticas e aprende como agir em situações de emergência."
+dialog_autowrap = true

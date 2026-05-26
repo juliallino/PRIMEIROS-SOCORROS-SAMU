@@ -1,0 +1,231 @@
+[gd_scene format=3 uid="uid://c6j6dy1set3a6"]
+
+[ext_resource type="Script" uid="uid://cebc2jvpreact" path="res://scripts/phases/MassagemCardiaca_Gameplay.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7h7fad6xma0m" path="res://massagem_cardiaca_1.png" id="2_bg"]
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_monitor"]
+bg_color = Color(0, 0, 0, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 0, 0.5)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(1, 0.2, 0.2, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Environment" id="Environment_cpr"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.6
+glow_strength = 1.1
+glow_bloom = 0.1
+
+[sub_resource type="Animation" id="Animation_ecg"]
+resource_name = "ecg_pulse"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Line2D:points")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.5, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 70, -30, 90, 40, 110, 0, 250, 0), PackedVector2Array(0, 0, 100, 0, 120, -30, 140, 40, 160, 0, 250, 0), PackedVector2Array(0, 0, 150, 0, 170, -30, 190, 40, 210, 0, 250, 0), PackedVector2Array(0, 0, 200, 0, 220, -30, 240, 40, 250, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_monitor"]
+_data = {
+"ecg_pulse": SubResource("Animation_ecg")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_chest"]
+radius = 180.0
+
+[sub_resource type="Animation" id="Animation_fail"]
+resource_name = "screen_darken"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("UILayer/DarkOverlay:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 0.784314)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fx"]
+_data = {
+"screen_darken": SubResource("Animation_fail")
+}
+
+[node name="MassagemCardiaca_Gameplay" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="InteractionArea" type="Area2D" parent="."]
+position = Vector2(960, 600)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea"]
+shape = SubResource("CircleShape2D_chest")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Monitor" type="Panel" parent="UILayer"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 230.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_monitor")
+
+[node name="Label" type="Label" parent="UILayer/Monitor"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 36.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "ECG MONITOR - SAMU"
+
+[node name="BPMValue" type="Label" parent="UILayer/Monitor"]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 40.0
+offset_right = 330.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 52
+text = "0"
+horizontal_alignment = 2
+
+[node name="BPMLabel" type="Label" parent="UILayer/Monitor"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 100.0
+offset_right = 330.0
+offset_bottom = 126.0
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+text = "BPM"
+horizontal_alignment = 2
+
+[node name="Line2D" type="Line2D" parent="UILayer/Monitor"]
+position = Vector2(20, 100)
+points = PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0)
+width = 3.0
+default_color = Color(0, 1, 0, 1)
+
+[node name="MonitorAnim" type="AnimationPlayer" parent="UILayer/Monitor"]
+libraries = {
+"": SubResource("AnimationLibrary_monitor")
+}
+
+[node name="FeedbackLabel" type="Label" parent="UILayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = -150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="UILayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -100.0
+offset_right = 400.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+max_value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="UILayer/ProgressBar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = -30.0
+offset_right = 100.0
+offset_bottom = -4.0
+grow_horizontal = 2
+text = "ESTABILIZAÇÃO CARDÍACA"
+horizontal_alignment = 1
+
+[node name="ErrorCounter" type="Label" parent="UILayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -250.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = 90.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "FALHAS: 0 / 5"
+horizontal_alignment = 2
+
+[node name="DarkOverlay" type="ColorRect" parent="UILayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_cpr")
+
+[node name="FXPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_fx")
+}

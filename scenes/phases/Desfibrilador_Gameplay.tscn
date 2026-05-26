@@ -1,0 +1,178 @@
+[gd_scene format=3 uid="uid://bakad21vew3d6"]
+
+[ext_resource type="Script" uid="uid://ceygfpiuhjcq7" path="res://scripts/phases/Desfibrilador_Gameplay.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dc7qbfhcdy8rt" path="res://desfibrilador_no_paciente_2.png" id="2_bg"]
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.1, 0.1, 0.1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(1, 0.8, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_timing_bg"]
+bg_color = Color(0.2, 0.2, 0.2, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_green_zone"]
+bg_color = Color(0, 0.8, 0, 0.6)
+
+[sub_resource type="Environment" id="Environment_def"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 1.0
+glow_strength = 1.0
+glow_bloom = 0.5
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_electric"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(400, 200, 1)
+direction = Vector3(0, 0, 0)
+spread = 180.0
+initial_velocity_min = 100.0
+initial_velocity_max = 300.0
+gravity = Vector3(0, 0, 0)
+scale_min = 5.0
+scale_max = 10.0
+color = Color(0, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_noise"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Desfibrilador_Gameplay" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="ShockParticles" type="GPUParticles2D" parent="."]
+position = Vector2(960, 540)
+emitting = false
+amount = 50
+process_material = SubResource("ParticleProcessMaterial_electric")
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="ChargeProgress" type="ProgressBar" parent="UILayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 110.0
+grow_horizontal = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+show_percentage = false
+
+[node name="Label" type="Label" parent="UILayer/ChargeProgress"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = -35.0
+offset_right = 150.0
+offset_bottom = -9.0
+grow_horizontal = 2
+text = "SEGURE [S] + [K] PARA CARREGAR"
+horizontal_alignment = 1
+
+[node name="TimingSystem" type="Control" parent="UILayer"]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -250.0
+offset_right = 400.0
+offset_bottom = -150.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Bar" type="Panel" parent="UILayer/TimingSystem"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_timing_bg")
+
+[node name="GreenZone" type="Panel" parent="UILayer/TimingSystem"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -50.0
+offset_right = 60.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_green_zone")
+
+[node name="Indicator" type="ColorRect" parent="UILayer/TimingSystem"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 10.0
+grow_vertical = 2
+color = Color(1, 1, 1, 1)
+
+[node name="FeedbackLabel" type="Label" parent="UILayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -100.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FlashOverlay" type="ColorRect" parent="UILayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 1)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_def")

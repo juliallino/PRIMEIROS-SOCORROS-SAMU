@@ -1,0 +1,182 @@
+[gd_scene format=3 uid="uid://7j7d01teu3b6"]
+
+[ext_resource type="Script" uid="uid://bbwrruep68acr" path="res://scripts/phases/Hemorragia_Gameplay.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7f4u1yclyd7f" path="res://estancando_sangramento_3.png" id="2_bg"]
+
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
+bg_color = Color(0.1, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_fill"]
+bg_color = Color(0.8, 0, 0, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="Environment" id="Environment_hem"]
+background_mode = 3
+glow_enabled = true
+glow_intensity = 0.5
+glow_strength = 1.0
+glow_bloom = 0.2
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_blood"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 60.0
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, 400, 0)
+scale_min = 3.0
+scale_max = 6.0
+color = Color(0.65, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_point"]
+radius = 80.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_monitor"]
+bg_color = Color(0, 0, 0, 0.7)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.2, 0.2, 0.5)
+
+[node name="Hemorragia_Gameplay" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+
+[node name="Background" type="TextureRect" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="BleedingPoints" type="Node2D" parent="."]
+
+[node name="Point1" type="Area2D" parent="BleedingPoints"]
+position = Vector2(600, 700)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BleedingPoints/Point1"]
+shape = SubResource("CircleShape2D_point")
+
+[node name="Effect" type="GPUParticles2D" parent="BleedingPoints/Point1"]
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_blood")
+lifetime = 0.8
+
+[node name="Point2" type="Area2D" parent="BleedingPoints"]
+position = Vector2(1300, 800)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BleedingPoints/Point2"]
+shape = SubResource("CircleShape2D_point")
+
+[node name="Effect" type="GPUParticles2D" parent="BleedingPoints/Point2"]
+amount = 30
+process_material = SubResource("ParticleProcessMaterial_blood")
+lifetime = 0.8
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+
+[node name="Monitor" type="Panel" parent="UILayer"]
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 350.0
+offset_bottom = 180.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_monitor")
+
+[node name="Label" type="Label" parent="UILayer/Monitor"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = 200.0
+offset_bottom = 36.0
+text = "ESTADO VOLÊMICO"
+
+[node name="Status" type="Label" parent="UILayer/Monitor"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 60.0
+offset_right = 285.0
+offset_bottom = 110.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "CRÍTICO"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="UILayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -100.0
+offset_right = 400.0
+offset_bottom = -70.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
+max_value = 100.0
+show_percentage = false
+
+[node name="Label" type="Label" parent="UILayer/ProgressBar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = -35.0
+offset_right = 150.0
+offset_bottom = -9.0
+grow_horizontal = 2
+text = "PRESSÃO E ESTABILIZAÇÃO"
+horizontal_alignment = 1
+
+[node name="BloodOverlay" type="ColorRect" parent="UILayer"]
+modulate = Color(1, 1, 1, 0.392157)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.5, 0, 0, 0.5)
+
+[node name="FeedbackLabel" type="Label" parent="UILayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_font_sizes/font_size = 48
+horizontal_alignment = 1
+
+[node name="DefeatOverlay" type="ColorRect" parent="UILayer"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hem")
