@@ -5,6 +5,7 @@ extends Control
 @onready var anim_player = $AnimationPlayer
 
 func _ready() -> void:
+	EventBus.intro_started.emit("parada_cardiaca")
 	# Iniciar efeitos sonoros e monitor
 	# AudioManager.play_ambient("res://assets/audio/chuva_chuva_ritmica.ogg")
 	# AudioManager.play_sfx("res://assets/audio/monitor_flatline.wav")

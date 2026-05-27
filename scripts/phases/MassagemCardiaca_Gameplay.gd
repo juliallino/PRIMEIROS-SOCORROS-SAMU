@@ -23,6 +23,7 @@ var max_errors: int = 5
 var total_clicks: int = 0
 
 func _ready() -> void:
+	EventBus.phase_started.emit("parada_cardiaca")
 	interaction_area.input_event.connect(_on_interaction_input)
 	progress_bar.value = 0
 	_update_ui()

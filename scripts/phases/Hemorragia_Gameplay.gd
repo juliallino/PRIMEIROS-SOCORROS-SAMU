@@ -15,6 +15,7 @@ var decay_rate: float = 5.0 # Taxa de perda se não houver pressão
 var recovery_rate: float = 8.0 # Taxa de ganho por ponto pressionado
 
 func _ready() -> void:
+	EventBus.phase_started.emit("hemorragia")
 	# Definir pontos de sangramento (Exemplo: Braço, Perna, Abdômen)
 	_setup_bleeding_points()
 	progress_bar.value = 0

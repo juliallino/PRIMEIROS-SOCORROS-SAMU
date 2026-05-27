@@ -9,6 +9,7 @@ signal transition_finished
 
 # Jogo e Fases
 signal phase_started(phase_id: String)
+signal intro_started(phase_id: String)
 signal phase_completed(phase_id: String, success: bool)
 signal checkpoint_reached(checkpoint_id: String)
 

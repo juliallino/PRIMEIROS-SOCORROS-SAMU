@@ -2,15 +2,15 @@ extends Control
 
 @onready var start_button = $UIIayer/MainContainer/Buttons/StartButton
 @onready var info_button = $UIIayer/MainContainer/Buttons/InfoButton
-@onready var reset_button = $UIIayer/MainContainer/Buttons/ResetButton
 @onready var info_popup = $UIIayer/InfoPopup
 @onready var medical_report_list = $UIIayer/MainContainer/MedicalReport/StatsList
 
 func _ready() -> void:
+	GameManager.set_state(GameManager.GameState.MENU)
+	
 	# Conectar botões
 	start_button.pressed.connect(_on_start_pressed)
 	info_button.pressed.connect(_on_info_pressed)
-	reset_button.pressed.connect(_on_reset_pressed)
 	
 	# Efeito de hover suave para todos os botões no container
 	for btn in $UIIayer/MainContainer/Buttons.get_children():
@@ -60,13 +60,6 @@ func _on_start_pressed() -> void:
 
 func _on_info_pressed() -> void:
 	info_popup.popup_centered()
-
-func _on_reset_pressed() -> void:
-	# Lógica para resetar o progresso
-	SaveManager.game_data["completed_phases"] = []
-	SaveManager.save_game()
-	_update_medical_report()
-	print("Progresso resetado.")
 
 func _on_button_hover(btn: Button) -> void:
 	var tween = create_tween()

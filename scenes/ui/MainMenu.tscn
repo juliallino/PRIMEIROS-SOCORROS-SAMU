@@ -145,12 +145,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "?"
 
-[node name="ResetButton" type="Button" parent="UIIayer/MainContainer/Buttons" unique_id=1115506647]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "REINICIAR PLANTÃO"
-
 [node name="MedicalReport" type="Panel" parent="UIIayer/MainContainer" unique_id=585874588]
 modulate = Color(1, 1, 1, 0.8)
 layout_mode = 1

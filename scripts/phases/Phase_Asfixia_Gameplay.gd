@@ -24,6 +24,7 @@ var max_errors: int = 3
 enum GestureState { START, DOWN, CURVE, UP }
 
 func _ready() -> void:
+	EventBus.phase_started.emit("asfixia")
 	progress_bar.max_value = required_success
 	progress_bar.value = 0
 	_update_error_ui()

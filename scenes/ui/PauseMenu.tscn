@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://cpausemenu"]
+
+[ext_resource type="Script" path="res://scripts/ui/PauseMenu.gd" id="1_script"]
+[ext_resource type="Theme" uid="uid://b8x8x8x8x8x8x" path="res://themes/main_theme.tres" id="2_theme"]
+
+[sub_resource type="Shader" id="Shader_blur"]
+code = "shader_type canvas_item;
+
+uniform float blur_amount : hint_range(0.0, 5.0) = 2.5;
+uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_linear_mipmap;
+
+void fragment() {
+    COLOR = textureLod(SCREEN_TEXTURE, SCREEN_UV, blur_amount);
+    COLOR.rgb *= 0.6; // Escurecer um pouco
+}"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_blur"]
+shader = SubResource("Shader_blur")
+shader_parameter/blur_amount = 2.5
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_script")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+
+[node name="BlurRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_blur")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MenuContainer" type="VBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Title" type="Label" parent="Control/MenuContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "PLANTÃO PAUSADO"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="Control/MenuContainer"]
+layout_mode = 2
+
+[node name="ContinueButton" type="Button" parent="Control/MenuContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+text = "CONTINUAR PLANTÃO"
+
+[node name="MenuButton" type="Button" parent="Control/MenuContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+text = "VOLTAR AO MENU"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[connection signal="pressed" from="Control/MenuContainer/ContinueButton" to="." method="_on_continue_pressed"]
+[connection signal="pressed" from="Control/MenuContainer/MenuButton" to="." method="_on_menu_pressed"]

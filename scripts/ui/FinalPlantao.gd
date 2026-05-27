@@ -7,6 +7,7 @@ extends Control
 @onready var new_shift_button = $UIIayer/CenterContainer/VBoxContainer/HBoxContainer/NewShiftButton
 
 func _ready() -> void:
+	GameManager.set_state(GameManager.GameState.GAME_OVER)
 	_calculate_and_display_stats()
 	_save_total_completion()
 	

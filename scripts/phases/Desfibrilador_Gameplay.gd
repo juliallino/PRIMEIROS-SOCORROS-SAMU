@@ -19,6 +19,7 @@ var indicator_direction: int = 1
 var indicator_speed: float = 400.0
 
 func _ready() -> void:
+	EventBus.phase_started.emit("desfibrilador")
 	charge_progress.value = 0
 	$UILayer/TimingSystem.hide()
 	flash_overlay.modulate.a = 0

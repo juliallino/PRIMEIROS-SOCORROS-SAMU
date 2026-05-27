@@ -5,6 +5,7 @@ extends Control
 @onready var anim_player = $AnimationPlayer
 
 func _ready() -> void:
+	EventBus.intro_started.emit("asfixia")
 	# Iniciar efeitos sonoros
 	# AudioManager.play_ambient("res://assets/audio/chuva_forte.ogg")
 	# AudioManager.play_sfx("res://assets/audio/sirene_ambulancia.wav")

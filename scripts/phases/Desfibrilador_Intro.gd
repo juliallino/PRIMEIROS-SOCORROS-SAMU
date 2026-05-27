@@ -5,6 +5,7 @@ extends Control
 @onready var anim_player = $AnimationPlayer
 
 func _ready() -> void:
+	EventBus.intro_started.emit("desfibrilador")
 	# Som de carregamento de capacitores e chuva
 	pass
 
