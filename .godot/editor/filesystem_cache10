@@ -1,5 +1,6 @@
 72322a848ab928aa5c89f0cb78209805
-::res://::1779890531
+::res://::1779890708
+export_presets.cfg::TextFile::-1::1779890708::0::1::::<><><>0<>0<><>::
 GEMINI.md::TextFile::-1::1779802713::0::1::::<><><>0<>0<><>::
 ::res://assets/::1779806412
 ::res://assets/graphics/::1779806412
@@ -30,15 +31,16 @@ Hemorragia_Intro.tscn::PackedScene::-1::1779804361::0::1::::<><><>0<>0<><>::
 MassagemCardiaca_Gameplay.tscn::PackedScene::6969163805658499495::1779852936::0::1::::<><><>0<>0<><>::res://scripts/phases/MassagemCardiaca_Gameplay.gd<>res://assets/graphics/ui/massagem_cardiaca_1.png
 ParadaCardiaca_Intro.tscn::PackedScene::-1::1779804410::0::1::::<><><>0<>0<><>::
 Phase_Asfixia_Gameplay.tscn::PackedScene::2196322438272297383::1779852415::0::1::::<><><>0<>0<><>::uid://lxjs5jf7cyqo::::res://scripts/phases/Phase_Asfixia_Gameplay.gd<>uid://twko5idg0gbl::::res://salvando_da_asfixia_0.png
-::res://scenes/ui/::1779889705
+::res://scenes/ui/::1779891643
 AsfixiaBriefing.tscn::PackedScene::699822291851761544::1779889146::0::1::::<><><>0<>0<><>::uid://xcua6kxqhlo1::::res://scripts/ui/AsfixiaBriefing.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
 DesfibriladorBriefing.tscn::PackedScene::1429484277808348261::1779889674::0::1::::<><><>0<>0<><>::uid://be28sevd476em::::res://scripts/ui/DesfibriladorBriefing.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
-FinalPlantao.tscn::PackedScene::278559159306131118::1779887498::0::1::::<><><>0<>0<><>::uid://ceoe4kciu2ghp::::res://scripts/ui/FinalPlantao.gd<>uid://dquq0bsot8xpb::::res://assets/graphics/ui/tela_menu_jogo_samu.png
+FinalPlantao.tscn::PackedScene::278559159306131118::1779891834::0::1::::<><><>0<>0<><>::uid://ceoe4kciu2ghp::::res://scripts/ui/FinalPlantao.gd<>uid://dquq0bsot8xpb::::res://assets/graphics/ui/tela_menu_jogo_samu.png
 HemorragiaBriefing.tscn::PackedScene::2257226490168996744::1779889705::0::1::::<><><>0<>0<><>::uid://dvblrsod3aagc::::res://scripts/ui/HemorragiaBriefing.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
-MainMenu.tscn::PackedScene::6646853107740871079::1779887454::0::1::::<><><>0<>0<><>::uid://fkxpfdbcb3if::::res://scripts/ui/MainMenu.gd<>uid://dquq0bsot8xpb::::res://assets/graphics/ui/tela_menu_jogo_samu.png<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
+MainMenu.tscn::PackedScene::6646853107740871079::1779891643::0::1::::<><><>0<>0<><>::uid://fkxpfdbcb3if::::res://scripts/ui/MainMenu.gd<>uid://dquq0bsot8xpb::::res://assets/graphics/ui/tela_menu_jogo_samu.png<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
 MassagemCardiacaBriefing.tscn::PackedScene::5234978088010131336::1779889152::0::1::::<><><>0<>0<><>::uid://c8ntnrrq82ivv::::res://scripts/ui/MassagemCardiacaBriefing.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
 PauseButton.tscn::PackedScene::171380021137510957::1779843919::0::1::::<><><>0<>0<><>::
-PauseMenu.tscn::PackedScene::148252613854398::1779887467::0::1::::<><><>0<>0<><>::res://scripts/ui/PauseMenu.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
+PauseMenu.tscn::PackedScene::148252613854398::1779891790::0::1::::<><><>0<>0<><>::res://scripts/ui/PauseMenu.gd<>uid://b8x8x8x8x8x8x::::res://themes/main_theme.tres
+node.tscn::PackedScene::6917739981003264535::1779892985::0::1::::<><><>0<>0<><>::
 ::res://scripts/::1779802799
 ::res://scripts/managers/::1779802921
 AudioManager.gd::GDScript::6297132260450340371::1779802668::0::1::::<>Node<><>0<>0<><>::
@@ -46,6 +48,7 @@ DialogueManager.gd::GDScript::7653616501783269961::1779802678::0::1::::<>Node<><
 EventBus.gd::GDScript::8941484863824250002::1779859300::0::1::::<>Node<><>0<>0<><>::
 GameManager.gd::GDScript::2948207293274178878::1779859874::0::1::::<>Node<><>0<>0<><>::
 PhaseManager.gd::GDScript::6683784782337637715::1779802682::0::1::::<>Node<><>0<>0<><>::
+node.gd::GDScript::9093561462252622186::1779892994::0::1::::<>Node<><>0<>0<><>::
 SaveManager.gd::GDScript::7002604988200289799::1779802664::0::1::::<>Node<><>0<>0<><>::
 TransitionManager.gd::GDScript::4067666060063257663::1779842723::0::1::::<>CanvasLayer<><>0<>0<><>::
 UIManager.gd::GDScript::6127041358165940084::1779857777::0::1::::<>CanvasLayer<><>0<>0<><>::

@@ -66,6 +66,34 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_MenuNormal"]
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 1, 0.4)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 1, 1, 0.1)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_MenuHover"]
+bg_color = Color(0.15, 0.15, 0.15, 0.8)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 1, 1, 0.8)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+shadow_color = Color(0, 1, 1, 0.4)
+shadow_size = 12
+
 [node name="FinalPlantao" type="Control" unique_id=2091088113]
 layout_mode = 3
 anchors_preset = 15
@@ -136,16 +164,34 @@ alignment = 1
 [node name="NewShiftButton" type="Button" parent="UIIayer/CenterContainer/VBoxContainer/HBoxContainer" unique_id=2024230144]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.5, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_MenuNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_MenuNormal")
 text = "NOVO PLANTÃO"
 
 [node name="BackButton" type="Button" parent="UIIayer/CenterContainer/VBoxContainer/HBoxContainer" unique_id=558583716]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.5, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_MenuNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_MenuNormal")
 text = "VOLTAR AO MENU"
 
 [node name="QuitButton" type="Button" parent="UIIayer/CenterContainer/VBoxContainer/HBoxContainer" unique_id=2091088114]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(0.5, 1, 1, 1)
+theme_override_styles/normal = SubResource("StyleBoxFlat_MenuNormal")
+theme_override_styles/hover = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_MenuHover")
+theme_override_styles/focus = SubResource("StyleBoxFlat_MenuNormal")
 text = "SAIR DO JOGO"
 
 [node name="StatsContainer" type="Panel" parent="UIIayer" unique_id=81541586]

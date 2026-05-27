@@ -1,1 +1,3 @@
 res://scenes/ui/MainMenu.tscn
+res://scenes/ui/PauseMenu.tscn
+res://scripts/managers/node.gd
