@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bbwrruep68acr" path="res://scripts/phases/Hemorragia_Gameplay.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b7f4u1yclyd7f" path="res://assets/graphics/ui/estancando_sangramento_3.png" id="2_bg"]
 [ext_resource type="AudioStream" uid="uid://bake52d8o2hea" path="res://assets/audios/audio_sangue.mp3" id="3_d1jus"]
-[ext_resource type="PackedScene" uid="uid://cvictoryoverlay" path="res://scenes/ui/VictoryOverlay.tscn" id="4_victory"]
+[ext_resource type="PackedScene" path="res://scenes/ui/VictoryOverlay.tscn" id="4_victory"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_point"]
 radius = 80.0
@@ -63,25 +63,13 @@ stretch_mode = 6
 [node name="BleedingPoints" type="Node2D" parent="." unique_id=1982241408]
 
 [node name="Point1" type="Area2D" parent="BleedingPoints" unique_id=861796281]
-position = Vector2(902, 695)
+position = Vector2(913, 658)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BleedingPoints/Point1" unique_id=178806934]
 shape = SubResource("CircleShape2D_point")
 
 [node name="Effect" type="GPUParticles2D" parent="BleedingPoints/Point1" unique_id=80428518]
-position = Vector2(18, 10)
-amount = 500
-lifetime = 0.8
-process_material = SubResource("ParticleProcessMaterial_blood")
-
-[node name="Point2" type="Area2D" parent="BleedingPoints" unique_id=482785586]
-position = Vector2(936, 743)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BleedingPoints/Point2" unique_id=367286787]
-shape = SubResource("CircleShape2D_point")
-
-[node name="Effect" type="GPUParticles2D" parent="BleedingPoints/Point2" unique_id=1403658348]
-amount = 500
+amount = 700
 lifetime = 0.8
 process_material = SubResource("ParticleProcessMaterial_blood")
 
@@ -178,9 +166,6 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="VictoryOverlay" parent="UILayer" instance=ExtResource("4_victory")]
-visible = false
-
 [node name="Message" type="Label" parent="UILayer/DefeatOverlay" unique_id=1486357785]
 layout_mode = 1
 anchors_preset = 8
@@ -198,6 +183,9 @@ theme_override_font_sizes/font_size = 42
 text = "MENSAGEM DE DERROTA"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="VictoryOverlay" parent="UILayer" unique_id=1718943702 instance=ExtResource("4_victory")]
+visible = false
 
 [node name="BloodAudioPlayer" type="AudioStreamPlayer" parent="." unique_id=645303197]
 stream = ExtResource("3_d1jus")

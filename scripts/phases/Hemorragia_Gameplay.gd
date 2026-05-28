@@ -47,6 +47,16 @@ func _setup_bleeding_points() -> void:
 			area.input_event.connect(_on_point_input.bind(area))
 			bleeding_points.append({"area": area, "is_pressed": false})
 
+func _input(event: InputEvent) -> void:
+	if not game_active: return
+	
+	# Consertar bug de 'pressão infinita' ao soltar o mouse fora da área
+	if event is InputEventMouseButton and not event.pressed:
+		for p in bleeding_points:
+			if p["is_pressed"]:
+				p["is_pressed"] = false
+				_on_pressure_stop(p["area"])
+
 func _on_point_input(_viewport, event, _shape_idx, area_node) -> void:
 	if not game_active: return
 	
@@ -55,9 +65,7 @@ func _on_point_input(_viewport, event, _shape_idx, area_node) -> void:
 		if event.pressed:
 			point_data["is_pressed"] = true
 			_on_pressure_start(area_node)
-		else:
-			point_data["is_pressed"] = false
-			_on_pressure_stop(area_node)
+		# O release agora é tratado globalmente no _input para segurança
 
 func _get_point_data(node) -> Dictionary:
 	for p in bleeding_points:

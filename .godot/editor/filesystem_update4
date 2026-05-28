@@ -16,3 +16,4 @@ res://scripts/phases/MassagemCardiaca_Gameplay.gd
 res://scenes/ui/RestartButton.tscn
 res://scenes/ui/MassagemCardiacaBriefing.tscn
 res://scripts/phases/Phase_Asfixia_Gameplay.gd
+res://scenes/phases/Hemorragia_Gameplay.tscn
