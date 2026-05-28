@@ -11,6 +11,7 @@ extends Node2D
 
 @onready var error_label = $UILayer/ErrorCounter
 @onready var defeat_overlay = $UILayer/DefeatOverlay
+@onready var phase_audio = $PhaseAudio
 
 # Configurações de Gameplay
 var is_charging: bool = false
@@ -31,11 +32,30 @@ func _ready() -> void:
 	$UILayer/TimingSystem.hide()
 	flash_overlay.modulate.a = 0
 	_update_ui()
+	if phase_audio:
+		phase_audio.play()
 
 func _process(delta: float) -> void:
 	if not game_active: return
 	_handle_charging(delta)
 	_handle_timing(delta)
+	_update_audio_effects(delta)
+
+func _update_audio_effects(_delta: float) -> void:
+	if not phase_audio or not phase_audio.playing: return
+	
+	# Tensão crescente baseada no carregamento e erros
+	var target_pitch = 1.0 + (charge_value / max_charge) * 0.15 + (float(error_count) / max_errors) * 0.2
+	var target_volume = -6.0 + (charge_value / max_charge) * 6.0 # Começa baixo (-6dB) e sobe até 0dB no pico
+	
+	# Interpolação suave para evitar cliques
+	phase_audio.pitch_scale = lerp(phase_audio.pitch_scale, target_pitch, 0.1)
+	phase_audio.volume_db = lerp(phase_audio.volume_db, target_volume, 0.1)
+	
+	# Simulação de distorção elétrica leve (vibrato rápido aleatório)
+	if is_charging:
+		phase_audio.pitch_scale += randf_range(-0.02, 0.02)
+		phase_audio.volume_db += randf_range(-0.5, 0.5)
 
 func _reset_attempt() -> void:
 	print("[DEBUG] Reiniciando tentativa de choque. Resetando flags.")
@@ -138,6 +158,11 @@ func _on_successful_shock() -> void:
 	SaveManager.game_data["completed_phases"].append("desfibrilador")
 	SaveManager.save_game()
 	
+	if phase_audio:
+		var tween = create_tween()
+		tween.tween_property(phase_audio, "volume_db", -40.0, 1.0)
+		tween.finished.connect(func(): phase_audio.stop())
+	
 	game_active = false
 	await get_tree().create_timer(3.0).timeout
 	EventBus.transition_started.emit("res://scenes/ui/FinalPlantao.tscn")
@@ -173,6 +198,12 @@ func _update_ui() -> void:
 func _lose() -> void:
 	game_active = false
 	EventBus.phase_completed.emit("desfibrilador", false)
+	
+	if phase_audio:
+		var tween = create_tween()
+		tween.tween_property(phase_audio, "volume_db", -40.0, 0.5)
+		tween.finished.connect(func(): phase_audio.stop())
+		
 	if defeat_overlay:
 		defeat_overlay.show()
 		defeat_overlay.modulate.a = 0

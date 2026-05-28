@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bbwrruep68acr" path="res://scripts/phases/Hemorragia_Gameplay.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b7f4u1yclyd7f" path="res://assets/graphics/ui/estancando_sangramento_3.png" id="2_bg"]
+[ext_resource type="AudioStream" uid="uid://bake52d8o2hea" path="res://assets/audios/audio_sangue.mp3" id="3_d1jus"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_point"]
 radius = 80.0
@@ -176,7 +177,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Message" type="Label" parent="UILayer/DefeatOverlay"]
+[node name="Message" type="Label" parent="UILayer/DefeatOverlay" unique_id=1486357785]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -193,6 +194,9 @@ theme_override_font_sizes/font_size = 42
 text = "MENSAGEM DE DERROTA"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="BloodAudioPlayer" type="AudioStreamPlayer" parent="." unique_id=645303197]
+stream = ExtResource("3_d1jus")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1398897706]
 environment = SubResource("Environment_hem")

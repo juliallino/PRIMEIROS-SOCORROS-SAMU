@@ -44,18 +44,29 @@ func set_state(new_state: GameState) -> void:
 		GameState.MENU:
 			get_tree().paused = false
 			UIManager.toggle_pause_button(false)
+			AudioManager.stop_all_sounds()
 		GameState.PLAYING:
 			get_tree().paused = false
 			UIManager.toggle_pause_button(true)
+			AudioManager.resume_gameplay_audio()
 		GameState.PAUSED:
 			get_tree().paused = true
 			UIManager.toggle_pause_button(false)
+			AudioManager.pause_gameplay_audio()
 		GameState.CUTSCENE:
 			get_tree().paused = false
 			UIManager.toggle_pause_button(true)
+			# Permitir áudio de transição da ambulância
+			var exceptions = []
+			var transition = get_tree().root.find_child("AmbulanceTransition", true, false)
+			if transition:
+				exceptions.append(transition.get_node_or_null("AmbulanceAudio"))
+				exceptions.append(transition.get_node_or_null("RainAudio"))
+			AudioManager.stop_all_sounds(exceptions)
 		GameState.GAME_OVER:
 			get_tree().paused = false
 			UIManager.toggle_pause_button(false)
+			AudioManager.stop_all_sounds()
 
 func _on_phase_started(_phase_id: String) -> void:
 	print("[GameManager] Sinal phase_started recebido: ", _phase_id)

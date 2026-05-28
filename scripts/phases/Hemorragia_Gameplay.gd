@@ -7,6 +7,7 @@ extends Node2D
 @onready var defeat_overlay = $UILayer/DefeatOverlay
 @onready var status_label = $UILayer/Monitor/Status
 @onready var monitor_panel = $UILayer/Monitor
+@onready var blood_audio_player = $BloodAudioPlayer
 
 # Configurações de Gameplay
 var bleeding_points = []
@@ -27,6 +28,13 @@ func _ready() -> void:
 	progress_bar.value = current_stability
 	blood_overlay.modulate.a = 0.3
 	defeat_overlay.hide()
+	
+	if blood_audio_player and blood_audio_player.stream:
+		if blood_audio_player.stream is AudioStreamWAV:
+			blood_audio_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+		elif blood_audio_player.stream is AudioStreamMP3:
+			blood_audio_player.stream.loop = true
+		blood_audio_player.volume_db = 0.0
 	
 	status_label.text = "INSTÁVEL"
 	status_label.modulate = Color.YELLOW
@@ -74,11 +82,13 @@ func _process(delta: float) -> void:
 		current_stability += recovery_rate * active_pressure_points * delta
 		# Reduzir sangue visual conforme estabiliza
 		blood_overlay.modulate.a = lerp(blood_overlay.modulate.a, 0.1, delta * 0.5)
+		_update_blood_audio(false) # Fade out
 	else:
 		current_stability -= decay_rate * delta
 		# Intensificar sangue visual
 		blood_overlay.modulate.a = lerp(blood_overlay.modulate.a, 0.8, delta * 0.2)
 		_shake_camera(2.0)
+		_update_blood_audio(true) # Fade in
 	
 	current_stability = clamp(current_stability, 0.0, 100.0)
 	progress_bar.value = current_stability
@@ -155,12 +165,25 @@ func _show_feedback(text: String, color: Color) -> void:
 	var tween = create_tween()
 	tween.tween_property(feedback_label, "modulate:a", 0.0, 1.0).set_delay(0.5)
 
+func _update_blood_audio(is_bleeding: bool) -> void:
+	if not blood_audio_player: return
+	
+	if is_bleeding:
+		if not blood_audio_player.playing:
+			if blood_audio_player.stream is AudioStreamWAV:
+				blood_audio_player.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+			blood_audio_player.play()
+		blood_audio_player.volume_db = 0.0 # Volume máximo
+	else:
+		blood_audio_player.stop()
+
 func _shake_camera(intensity: float) -> void:
 	camera.offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * intensity
 
 func _win_phase() -> void:
 	game_active = false
 	set_process(false)
+	_update_blood_audio(false)
 	EventBus.phase_completed.emit("hemorragia", true)
 	SaveManager.game_data["completed_phases"].append("hemorragia")
 	SaveManager.save_game()
@@ -175,6 +198,7 @@ func _win_phase() -> void:
 func _lose_phase() -> void:
 	game_active = false
 	set_process(false)
+	_update_blood_audio(false)
 	EventBus.phase_completed.emit("hemorragia", false)
 	
 	# Sequência cinematográfica de derrota

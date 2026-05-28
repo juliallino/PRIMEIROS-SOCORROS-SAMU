@@ -6,6 +6,8 @@ extends Control
 @onready var smoke_particles: GPUParticles2D = $SmokeParticles
 @onready var siren_red: ColorRect = $SirenRed
 @onready var siren_blue: ColorRect = $SirenBlue
+@onready var ambulance_audio: AudioStreamPlayer = $AmbulanceAudio
+@onready var rain_audio: AudioStreamPlayer = $RainAudio
 
 var radio_dialogues = [
 	"Central para unidade móvel. Prossigam com cautela.",

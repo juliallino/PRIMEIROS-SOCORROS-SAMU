@@ -13,10 +13,7 @@ func _ready() -> void:
 
 func open() -> void:
 	visible = true
-	get_tree().paused = true
-	
-	# Efeito sonoro de pause
-	EventBus.sfx_played.emit("res://assets/audio/sfx/ui_pause_open.wav")
+	GameManager.set_state(GameManager.GameState.PAUSED)
 	
 	# Animação de entrada
 	var tween = create_tween().set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
@@ -24,9 +21,6 @@ func open() -> void:
 	tween.tween_property(blur_rect, "modulate:a", 1.0, 0.3)
 	tween.tween_property(menu_container, "modulate:a", 1.0, 0.3)
 	tween.tween_property(menu_container, "scale", Vector2(1.0, 1.0), 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	
-	# Abafar áudio
-	AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index("Master"), 0, true) # Assumindo um LowPass no slot 0 do Master
 
 func close() -> void:
 	# Animação de saída
@@ -38,15 +32,13 @@ func close() -> void:
 	
 	await tween.finished
 	
-	# Restaurar áudio
-	AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index("Master"), 0, false)
+	# Restaurar estado
+	GameManager.set_state(GameManager.GameState.PLAYING)
 	
-	get_tree().paused = false
 	visible = false
 
 func force_close() -> void:
 	# Limpeza instantânea sem animações para trocas de cena
-	AudioServer.set_bus_effect_enabled(AudioServer.get_bus_index("Master"), 0, false)
 	get_tree().paused = false
 	visible = false
 	
@@ -60,10 +52,13 @@ func force_close() -> void:
 	print("[PauseMenu] UI de pause encerrada forçadamente e limpa.")
 
 func _on_continue_pressed() -> void:
+	print("[PauseMenu] Botão Continuar pressionado.")
 	close()
 
 func _on_menu_pressed() -> void:
+	print("[PauseMenu] Botão Menu pressionado.")
 	UIManager.return_to_main_menu()
 
 func _on_quit_pressed() -> void:
+	print("[PauseMenu] Botão Sair pressionado.")
 	get_tree().quit()

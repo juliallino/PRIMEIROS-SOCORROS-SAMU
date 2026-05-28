@@ -18,7 +18,7 @@ config/name="Plantão de Emergência"
 config/description="Um jogo narrativo e cinematográfico de primeiros socorros."
 run/main_scene="res://scenes/ui/MainMenu.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dff78vyyhl83d"
 
 [autoload]
 

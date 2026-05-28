@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://ceygfpiuhjcq7" path="res://scripts/phases/Desfibrilador_Gameplay.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://dc7qbfhcdy8rt" path="res://desfibrilador_no_paciente_2.png" id="2_bg"]
+[ext_resource type="AudioStream" uid="uid://8ny3x5t17hjo" path="res://assets/audios/audio_desfibrilador.mp3" id="3_audio"]
 
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
@@ -234,3 +235,8 @@ color = Color(1, 1, 1, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_def")
+
+[node name="PhaseAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_audio")
+autoplay = true
+bus = &"Music"

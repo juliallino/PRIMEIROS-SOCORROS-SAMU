@@ -1,3 +1,7 @@
-res://scenes/ui/MainMenu.tscn
-res://scenes/ui/PauseMenu.tscn
-res://scripts/managers/node.gd
+res://scripts/phases/Desfibrilador_Gameplay.gd
+res://scripts/managers/AudioManager.gd
+res://scripts/managers/GameManager.gd
+res://scripts/ui/PauseMenu.gd
+res://scripts/managers/TransitionManager.gd
+res://scripts/ui/AmbulanceTransition.gd
+res://scenes/phases/AmbulanceTransition.tscn

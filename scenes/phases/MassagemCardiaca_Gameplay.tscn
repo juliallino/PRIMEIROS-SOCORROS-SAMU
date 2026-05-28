@@ -1,7 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://c6j6dy1set3a6"]
+[gd_scene format=3 uid="uid://c6j6dy1set3a6"]
 
-[ext_resource type="Script" path="res://scripts/phases/MassagemCardiaca_Gameplay.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/graphics/ui/massagem_cardiaca_1.png" id="2_bg"]
+[ext_resource type="Script" uid="uid://cebc2jvpreact" path="res://scripts/phases/MassagemCardiaca_Gameplay.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b7h7fad6xma0m" path="res://assets/graphics/ui/massagem_cardiaca_1.png" id="2_bg"]
+[ext_resource type="AudioStream" uid="uid://dgfomtqt5jgvg" path="res://assets/audios/audio_batimento.mp3" id="3_hgsgm"]
+[ext_resource type="Script" uid="uid://in0k80e8fa6j" path="res://scripts/phases/RhythmManager.gd" id="4_rhythm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_monitor"]
 bg_color = Color(0, 0.05, 0.05, 0.8)
@@ -14,6 +16,27 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="Animation" id="Animation_ecg"]
+resource_name = "ecg_pulse"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Line2D:points")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 70, -40, 90, 40, 110, 0, 250, 0), PackedVector2Array(0, 0, 100, 0, 120, -40, 140, 40, 160, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_monitor"]
+_data = {
+&"ecg_pulse": SubResource("Animation_ecg")
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_progress_bg"]
 bg_color = Color(0.1, 0.1, 0.1, 0.8)
@@ -35,30 +58,8 @@ shadow_size = 8
 background_mode = 3
 glow_enabled = true
 glow_intensity = 0.8
-glow_strength = 1.0
 glow_bloom = 0.2
 glow_blend_mode = 0
-
-[sub_resource type="Animation" id="Animation_ecg"]
-resource_name = "ecg_pulse"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Line2D:points")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 0,
-"values": [PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 70, -40, 90, 40, 110, 0, 250, 0), PackedVector2Array(0, 0, 100, 0, 120, -40, 140, 40, 160, 0, 250, 0), PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_monitor"]
-_data = {
-"ecg_pulse": SubResource("Animation_ecg")
-}
 
 [sub_resource type="Animation" id="Animation_fail"]
 resource_name = "screen_darken"
@@ -78,35 +79,35 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fx"]
 _data = {
-"screen_darken": SubResource("Animation_fail")
+&"screen_darken": SubResource("Animation_fail")
 }
 
-[node name="MassagemCardiaca_Gameplay" type="Node2D"]
+[node name="MassagemCardiaca_Gameplay" type="Node2D" unique_id=1723389688]
 script = ExtResource("1_script")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=244834674]
 position = Vector2(960, 540)
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=333073908]
 offset_right = 1920.0
 offset_bottom = 1080.0
 texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="RhythmCircles" type="Node2D" parent="."]
+[node name="RhythmCircles" type="Node2D" parent="." unique_id=91851576]
 position = Vector2(960, 600)
 
-[node name="UILayer" type="CanvasLayer" parent="."]
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=393827075]
 
-[node name="Monitor" type="Panel" parent="UILayer"]
+[node name="Monitor" type="Panel" parent="UILayer" unique_id=1246575777]
 offset_left = 50.0
 offset_top = 50.0
 offset_right = 400.0
 offset_bottom = 230.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_monitor")
 
-[node name="Label" type="Label" parent="UILayer/Monitor"]
+[node name="Label" type="Label" parent="UILayer/Monitor" unique_id=729244633]
 layout_mode = 0
 offset_left = 15.0
 offset_top = 10.0
@@ -116,7 +117,7 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 theme_override_font_sizes/font_size = 14
 text = "SISTEMA DE MONITORAMENTO"
 
-[node name="BPMValue" type="Label" parent="UILayer/Monitor"]
+[node name="BPMValue" type="Label" parent="UILayer/Monitor" unique_id=1313620622]
 layout_mode = 0
 offset_left = 200.0
 offset_top = 40.0
@@ -127,7 +128,7 @@ theme_override_font_sizes/font_size = 52
 text = "110"
 horizontal_alignment = 2
 
-[node name="BPMLabel" type="Label" parent="UILayer/Monitor"]
+[node name="BPMLabel" type="Label" parent="UILayer/Monitor" unique_id=1359659314]
 layout_mode = 0
 offset_left = 260.0
 offset_top = 100.0
@@ -137,18 +138,16 @@ theme_override_colors/font_color = Color(0, 1, 1, 1)
 text = "BPM"
 horizontal_alignment = 2
 
-[node name="Line2D" type="Line2D" parent="UILayer/Monitor"]
+[node name="Line2D" type="Line2D" parent="UILayer/Monitor" unique_id=459783724]
 position = Vector2(20, 110)
 points = PackedVector2Array(0, 0, 50, 0, 100, 0, 150, 0, 200, 0, 250, 0)
 width = 3.0
 default_color = Color(0, 1, 1, 1)
 
-[node name="MonitorAnim" type="AnimationPlayer" parent="UILayer/Monitor"]
-libraries = {
-"": SubResource("AnimationLibrary_monitor")
-}
+[node name="MonitorAnim" type="AnimationPlayer" parent="UILayer/Monitor" unique_id=1684145753]
+libraries/ = SubResource("AnimationLibrary_monitor")
 
-[node name="FeedbackLabel" type="Label" parent="UILayer"]
+[node name="FeedbackLabel" type="Label" parent="UILayer" unique_id=1391794810]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -166,7 +165,7 @@ theme_override_font_sizes/font_size = 48
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ProgressBar" type="ProgressBar" parent="UILayer"]
+[node name="ProgressBar" type="ProgressBar" parent="UILayer" unique_id=1219473093]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -180,10 +179,9 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/background = SubResource("StyleBoxFlat_progress_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_progress_fill")
-max_value = 100.0
 show_percentage = false
 
-[node name="Label" type="Label" parent="UILayer/ProgressBar"]
+[node name="Label" type="Label" parent="UILayer/ProgressBar" unique_id=72295119]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -198,7 +196,7 @@ theme_override_font_sizes/font_size = 18
 text = "ESTABILIZAÇÃO CARDÍACA"
 horizontal_alignment = 1
 
-[node name="ErrorCounter" type="Label" parent="UILayer"]
+[node name="ErrorCounter" type="Label" parent="UILayer" unique_id=822811971]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -212,7 +210,7 @@ theme_override_font_sizes/font_size = 24
 text = "FALHAS: 0 / 5"
 horizontal_alignment = 2
 
-[node name="DefeatOverlay" type="ColorRect" parent="UILayer"]
+[node name="DefeatOverlay" type="ColorRect" parent="UILayer" unique_id=1940823731]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -221,7 +219,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.862745)
 
-[node name="Message" type="Label" parent="UILayer/DefeatOverlay"]
+[node name="Message" type="Label" parent="UILayer/DefeatOverlay" unique_id=1188198767]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -238,7 +236,7 @@ theme_override_font_sizes/font_size = 48
 text = "NÃO DESISTA!"
 horizontal_alignment = 1
 
-[node name="SubMessage" type="Label" parent="UILayer/DefeatOverlay"]
+[node name="SubMessage" type="Label" parent="UILayer/DefeatOverlay" unique_id=1881856703]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -256,7 +254,7 @@ text = "A vida do paciente depende de você.
 Mantenha o ritmo das compressões."
 horizontal_alignment = 1
 
-[node name="FlashOverlay" type="ColorRect" parent="UILayer"]
+[node name="FlashOverlay" type="ColorRect" parent="UILayer" unique_id=1169979413]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -265,10 +263,12 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 0, 0, 0)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=978415916]
 environment = SubResource("Environment_cpr")
 
-[node name="FXPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_fx")
-}
+[node name="FXPlayer" type="AnimationPlayer" parent="." unique_id=759096994]
+libraries/ = SubResource("AnimationLibrary_fx")
+
+[node name="HeartbeatPlayer" type="AudioStreamPlayer" parent="." unique_id=109180357]
+stream = ExtResource("3_hgsgm")
+script = ExtResource("4_rhythm")

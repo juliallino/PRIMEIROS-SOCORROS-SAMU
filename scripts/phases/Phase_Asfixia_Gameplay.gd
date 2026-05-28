@@ -7,6 +7,7 @@ extends Node2D
 @onready var defeat_overlay = $UILayer/DefeatOverlay
 @onready var spark_particles = $SparkParticles
 @onready var camera = $Camera2D
+@onready var asfixia_audio_player = $AsfixiaAudioPlayer
 
 # Configurações de Gameplay
 var points: PackedVector2Array = []
@@ -24,6 +25,10 @@ func _ready() -> void:
 	progress_bar.max_value = required_success
 	progress_bar.value = 0
 	_update_error_ui()
+	
+	if asfixia_audio_player and asfixia_audio_player.stream:
+		asfixia_audio_player.stream.loop = true
+		asfixia_audio_player.play()
 
 func _input(event: InputEvent) -> void:
 	if defeat_overlay.visible: return
@@ -198,6 +203,12 @@ func _win_game() -> void:
 	feedback_label.text = "PACIENTE SALVO!"
 	feedback_label.modulate = Color.CYAN
 	feedback_label.modulate.a = 1.0
+	
+	# Parar áudio com fade out suave
+	if asfixia_audio_player:
+		var audio_tween = create_tween()
+		audio_tween.tween_property(asfixia_audio_player, "volume_db", -80.0, 2.0)
+		audio_tween.finished.connect(asfixia_audio_player.stop)
 	
 	EventBus.phase_completed.emit("asfixia", true)
 	SaveManager.game_data["completed_phases"].append("asfixia")

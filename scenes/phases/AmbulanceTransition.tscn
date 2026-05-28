@@ -3,6 +3,8 @@
 [ext_resource type="Script" uid="uid://cfphgkmrm3whm" path="res://scripts/ui/AmbulanceTransition.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://b7ml86hwaa6ap" path="res://assets/graphics/ui/tela_ambulância.png" id="2_bg"]
 [ext_resource type="Shader" uid="uid://epvlt4urm5db" path="res://themes/monitor_effect.gdshader" id="3_shader"]
+[ext_resource type="AudioStream" uid="uid://c4lcupuknqt3f" path="res://assets/audios/audio_ambulancia.mp3" id="4_ambulance"]
+[ext_resource type="AudioStream" uid="uid://1frkbp2qrseg" path="res://assets/audios/audio_chuva.mp3" id="5_rain"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_monitor"]
 shader = ExtResource("3_shader")
@@ -293,3 +295,13 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.1)
+
+[node name="AmbulanceAudio" type="AudioStreamPlayer" parent="." unique_id=718987732]
+stream = ExtResource("4_ambulance")
+volume_db = -24.836
+autoplay = true
+
+[node name="RainAudio" type="AudioStreamPlayer" parent="." unique_id=2091040951]
+stream = ExtResource("5_rain")
+volume_db = -42.687
+autoplay = true

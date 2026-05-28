@@ -90,6 +90,13 @@ func start_cinematic_transition(target_path: String) -> void:
 	var next_scene_resource = ResourceLoader.load_threaded_get(target_scene_path)
 	
 	# 7. Fade Out Final
+	if current_ambulance_scene:
+		var amb_audio = current_ambulance_scene.get_node_or_null("AmbulanceAudio")
+		var rain_audio = current_ambulance_scene.get_node_or_null("RainAudio")
+		var audio_tween = create_tween().set_parallel(true)
+		if amb_audio: audio_tween.tween_property(amb_audio, "volume_db", -40.0, 0.8)
+		if rain_audio: audio_tween.tween_property(rain_audio, "volume_db", -40.0, 0.8)
+	
 	animation_player.play("fade_out")
 	await animation_player.animation_finished
 	
@@ -115,7 +122,20 @@ func _show_ambulance_scene() -> void:
 		add_child(current_ambulance_scene)
 		move_child(current_ambulance_scene, 0) # Fica atrás do ColorRect de fade
 		
-		# Tocar sons de ambiente via EventBus
-		EventBus.sfx_played.emit("res://assets/audio/sfx/ambulance_engine.wav")
-		EventBus.sfx_played.emit("res://assets/audio/sfx/rain_loop.wav")
-		EventBus.sfx_played.emit("res://assets/audio/sfx/siren_distant.wav")
+		# Esperar um frame para garantir que o nó está na árvore
+		await get_tree().process_frame
+		
+		# Configurar e tocar áudios cinematográficos com fade in
+		var amb_audio = current_ambulance_scene.get_node_or_null("AmbulanceAudio")
+		var rain_audio = current_ambulance_scene.get_node_or_null("RainAudio")
+		
+		if amb_audio:
+			amb_audio.volume_db = -40
+			amb_audio.play()
+		if rain_audio:
+			rain_audio.volume_db = -40
+			rain_audio.play()
+			
+		var audio_tween = create_tween().set_parallel(true)
+		if amb_audio: audio_tween.tween_property(amb_audio, "volume_db", -2.0, 1.5)
+		if rain_audio: audio_tween.tween_property(rain_audio, "volume_db", -8.0, 2.0)

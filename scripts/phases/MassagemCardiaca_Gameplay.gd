@@ -6,6 +6,7 @@ extends Node2D
 @onready var feedback_label = $UILayer/FeedbackLabel
 @onready var error_label = $UILayer/ErrorCounter
 @onready var monitor_anim = $UILayer/Monitor/MonitorAnim
+@onready var heartbeat_player = $HeartbeatPlayer
 @onready var fx_player = $FXPlayer
 @onready var camera = $Camera2D
 
@@ -32,6 +33,7 @@ var error_count: int = 0
 var max_errors: int = 5
 var game_active: bool = true
 var cpr_started: bool = false
+var first_success_done: bool = false
 var time_since_last_click: float = 0.0
 var inactivity_threshold: float = 1.5 # Tempo em segundos antes de começar a cair
 var decay_rate: float = 4.0 # Velocidade da queda por segundo
@@ -40,6 +42,7 @@ func _ready() -> void:
 	EventBus.phase_started.emit("parada_cardiaca")
 	rhythm_circles.set_script(load("res://scripts/phases/CircleDrawer.gd")) # Script auxiliar para desenho
 	_update_ui()
+	_start_heartbeat_audio()
 
 func _process(delta: float) -> void:
 	if not game_active: return
@@ -123,6 +126,14 @@ func _handle_hit(msg: String, color: Color, gain: float) -> void:
 	_update_ui()
 	_check_conditions()
 
+func _start_heartbeat_audio() -> void:
+	if heartbeat_player and heartbeat_player.has_method("start_rhythm"):
+		heartbeat_player.start_rhythm()
+
+func _stop_heartbeat_audio() -> void:
+	if heartbeat_player and heartbeat_player.has_method("stop_rhythm"):
+		heartbeat_player.stop_rhythm()
+
 func _handle_error(msg: String) -> void:
 	stabilization_progress = max(0, stabilization_progress - 2.0)
 	error_count += 1
@@ -174,6 +185,7 @@ func _check_conditions() -> void:
 
 func _win() -> void:
 	game_active = false
+	_stop_heartbeat_audio()
 	feedback_label.text = "PACIENTE ESTABILIZADO!"
 	feedback_label.modulate = Color.CYAN
 	feedback_label.modulate.a = 1.0
@@ -187,6 +199,7 @@ func _win() -> void:
 
 func _lose() -> void:
 	game_active = false
+	_stop_heartbeat_audio()
 	EventBus.phase_completed.emit("parada_cardiaca", false)
 	var defeat_overlay = $UILayer.get_node_or_null("DefeatOverlay")
 	if defeat_overlay:

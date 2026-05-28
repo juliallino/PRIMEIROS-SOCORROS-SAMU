@@ -7,6 +7,7 @@ extends Control
 
 func _ready() -> void:
 	GameManager.set_state(GameManager.GameState.MENU)
+	AudioManager.play_ambient("res://assets/audios/audio_ambiente.mp3")
 	
 	# Conectar botões
 	start_button.pressed.connect(_on_start_pressed)

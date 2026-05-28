@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://lxjs5jf7cyqo" path="res://scripts/phases/Phase_Asfixia_Gameplay.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://twko5idg0gbl" path="res://salvando_da_asfixia_0.png" id="2_victim"]
+[ext_resource type="AudioStream" uid="uid://dg35ufrqpsklg" path="res://assets/audios/audio_asfixia.mp3" id="3_audio"]
 
 [sub_resource type="Curve" id="Curve_trail"]
 _data = [Vector2(0, 0.2), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -224,6 +225,10 @@ environment = SubResource("Environment_gameplay")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=761840839]
 libraries/ = SubResource("AnimationLibrary_gameplay")
 autoplay = &"guide_fade"
+
+[node name="AsfixiaAudioPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_audio")
+bus = &"Master"
 
 [node name="InteractionArea" type="Area2D" parent="." unique_id=424341212]
 position = Vector2(960, 680)
