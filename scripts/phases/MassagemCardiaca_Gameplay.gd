@@ -189,6 +189,10 @@ func _win() -> void:
 	game_active = false
 	_stop_heartbeat_audio()
 	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	# Desaceleração cinematográfica
 	Engine.time_scale = 0.5
 	
@@ -212,6 +216,11 @@ func _win() -> void:
 func _lose() -> void:
 	game_active = false
 	_stop_heartbeat_audio()
+	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	EventBus.phase_completed.emit("parada_cardiaca", false)
 	var defeat_overlay = $UILayer.get_node_or_null("DefeatOverlay")
 	if defeat_overlay:

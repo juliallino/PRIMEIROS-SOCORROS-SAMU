@@ -153,6 +153,17 @@ func _on_successful_shock() -> void:
 	print("[DEBUG] Choque bem sucedido!")
 	is_timing_active = false
 	$UILayer/TimingSystem.hide()
+	
+	# Parar áudio imediatamente
+	if phase_audio:
+		var tween = create_tween()
+		tween.tween_property(phase_audio, "volume_db", -80.0, 0.5)
+		tween.finished.connect(func(): phase_audio.stop())
+	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	_apply_shock_effects()
 	
 	# Desaceleração cinematográfica
@@ -170,11 +181,6 @@ func _on_successful_shock() -> void:
 	EventBus.phase_completed.emit("desfibrilador", true)
 	SaveManager.game_data["completed_phases"].append("desfibrilador")
 	SaveManager.save_game()
-	
-	if phase_audio:
-		var tween = create_tween()
-		tween.tween_property(phase_audio, "volume_db", -40.0, 1.0)
-		tween.finished.connect(func(): phase_audio.stop())
 	
 	game_active = false
 	EventBus.transition_started.emit("res://scenes/ui/FinalPlantao.tscn")
@@ -216,6 +222,11 @@ func _update_ui() -> void:
 
 func _lose() -> void:
 	game_active = false
+	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	EventBus.phase_completed.emit("desfibrilador", false)
 	
 	if phase_audio:

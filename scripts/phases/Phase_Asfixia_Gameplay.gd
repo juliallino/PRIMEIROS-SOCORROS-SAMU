@@ -177,6 +177,11 @@ func _shake_camera(intensity: float) -> void:
 func _lose_game() -> void:
 	if is_phase_over: return
 	is_phase_over = true
+	
+	# Esconder botões de interface durante a derrota
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	EventBus.phase_completed.emit("asfixia", false)
 	defeat_overlay.show()
 	defeat_overlay.modulate.a = 0
@@ -203,6 +208,16 @@ func _win_game() -> void:
 	if is_phase_over: return
 	is_phase_over = true
 	
+	# Parar áudio imediatamente com fade out curto
+	if asfixia_audio_player:
+		var audio_tween = create_tween()
+		audio_tween.tween_property(asfixia_audio_player, "volume_db", -80.0, 0.5)
+		audio_tween.finished.connect(asfixia_audio_player.stop)
+	
+	# Esconder botões de interface durante a vitória
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	# Desativar interações e esconder guia
 	is_drawing = false
 	player_trail.points = []
@@ -222,12 +237,6 @@ func _win_game() -> void:
 	
 	# Restaurar tempo
 	Engine.time_scale = 1.0
-	
-	# Parar áudio com fade out suave
-	if asfixia_audio_player:
-		var audio_tween = create_tween()
-		audio_tween.tween_property(asfixia_audio_player, "volume_db", -80.0, 2.0)
-		audio_tween.finished.connect(asfixia_audio_player.stop)
 	
 	EventBus.phase_completed.emit("asfixia", true)
 	SaveManager.game_data["completed_phases"].append("asfixia")

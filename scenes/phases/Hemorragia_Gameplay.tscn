@@ -69,6 +69,7 @@ position = Vector2(913, 658)
 shape = SubResource("CircleShape2D_point")
 
 [node name="Effect" type="GPUParticles2D" parent="BleedingPoints/Point1" unique_id=80428518]
+position = Vector2(-5, 8)
 amount = 700
 lifetime = 0.8
 process_material = SubResource("ParticleProcessMaterial_blood")

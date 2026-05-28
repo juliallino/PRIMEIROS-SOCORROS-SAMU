@@ -195,6 +195,10 @@ func _win_phase() -> void:
 	set_process(false)
 	_update_blood_audio(false)
 	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	# Desaceleração cinematográfica
 	Engine.time_scale = 0.5
 	
@@ -219,6 +223,11 @@ func _lose_phase() -> void:
 	game_active = false
 	set_process(false)
 	_update_blood_audio(false)
+	
+	# Esconder botões de interface
+	UIManager.hide_restart_button()
+	UIManager.toggle_pause_button(false)
+	
 	EventBus.phase_completed.emit("hemorragia", false)
 	
 	# Sequência cinematográfica de derrota
